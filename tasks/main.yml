@@ -1,2 +1,37 @@
 ---
-# tasks file for firewalld
+- name: make sure to become true
+  include: ensure_become.yml
+
+- name: install firewalld
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - firewalld
+
+- name: configure services in firewalld
+  firewalld:
+    service:    "{{ item.service }}"
+    state:      "{{ item.state | default('enabled') }}"
+    zone:       "{{ firewalld_zone }}"
+    permanent:  "{{ not firewalld_testing }}"
+  with_items:   "{{ firewalld_services }}"
+  notify: restart firewalld
+
+- name: configure ports in firewalld
+  firewalld:
+    port:       "{{ item.port }}/{{ item.protocol }}"
+    state:      "{{ item.state | default('enabled') }}"
+    zone:       "{{ firewalld_zone }}"
+    permanent:  "{{ not firewalld_testing }}"
+  with_items:   "{{ firewalld_ports }}"
+  notify: restart firewalld
+
+- name: configure rich rules in firewalld
+  firewalld:
+    rich_rule:  "{{ item.rule }}"
+    state:      "{{ item.state | default('enabled') }}"
+    zone:       "{{ firewalld_zone }}"
+    permanent:  "{{ not firewalld_testing }}"
+  with_items:   "{{ firewalld_richrules }}"
+  notify: restart firewalld

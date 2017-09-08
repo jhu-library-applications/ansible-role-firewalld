@@ -1,2 +1,14 @@
 ---
-# defaults file for firewalld
+firewalld_testing:      false
+firewalld_zone:         "public"
+firewalld_services:
+  - service: ssh
+  - service: http
+    state: disabled
+firewalld_ports:
+  - port: 80
+    protocol: tcp
+    state: disabled
+firewalld_richrules:
+  - rule: 'rule family="ipv4" source address="128.220.8.58/32" source-port port="8080" protocol="tcp" log prefix="jetty" level="info" accept'
+    state: disabled
