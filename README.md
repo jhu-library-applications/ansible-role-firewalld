@@ -3,7 +3,7 @@ Ansible Role: FirewallD
 
 Installs and configures FirewallD on Centos
 
-This role must be run with become: true.
+This role must be run with `become: true`.
 
 As one might easily notice, the role currently only supports a subset of configuration possibilities in FirewallD (and its ansible module).
 
@@ -26,8 +26,21 @@ Role Variables
         protocol: tcp
         state: disabled
     firewalld_richrules:
-      - rule: 'rule family="ipv4" source address="128.220.8.58/32" source-port port="8080" protocol="tcp" log prefix="jetty" level="info" accept'
+      - rule: 'rule family="ipv4" source ipset="whitelist" port port="8080" protocol="tcp" log prefix="port-access-allowed" level="info" limit value="1/m" accept'
         state: disabled
+      - rule: 'rule family="ipv4" source NOT ipset="whitelist" port port="8080" protocol="tcp" log prefix="port-access-denied" level="info" limit value="1/m" reject'
+        state: disabled
+      - rule: 'rule family="ipv4" source ipset="blacklist" log prefix="blacklist-access-denied" level="info" limit value="1/m" reject'
+        state: disabled
+    firewalld_ipsets: [] # NOTE: remember to remove the empty brackets if configuring ipsets
+      # - name: whitelist
+      #   ips:
+      #     - "63.245.215.20"
+      #     - "69.50.232.54"
+      # - name: blacklist
+      #   ips:
+      #     - "172.217.7.142"
+      #     - "31.13.69.228"
 
 Dependencies
 ------------
