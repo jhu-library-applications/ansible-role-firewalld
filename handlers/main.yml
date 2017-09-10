@@ -1,7 +1,11 @@
 ---
-- name: restart firewalld
+- name: restart firewalld service
   become: true
   service:
     name: "firewalld"
     enabled: true
     state: restarted
+
+- name: reload firewalld
+  become: true
+  command: "firewall-cmd --reload"

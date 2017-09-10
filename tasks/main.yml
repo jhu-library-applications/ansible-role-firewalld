@@ -16,7 +16,7 @@
     zone:       "{{ firewalld_zone }}"
     permanent:  "{{ not firewalld_testing }}"
   with_items:   "{{ firewalld_services }}"
-  notify: restart firewalld
+  notify: reload firewalld
 
 - name: configure ports in firewalld
   firewalld:
@@ -25,7 +25,7 @@
     zone:       "{{ firewalld_zone }}"
     permanent:  "{{ not firewalld_testing }}"
   with_items:   "{{ firewalld_ports }}"
-  notify: restart firewalld
+  notify: reload firewalld
 
 - name: configure rich rules in firewalld
   firewalld:
@@ -34,4 +34,4 @@
     zone:       "{{ firewalld_zone }}"
     permanent:  "{{ not firewalld_testing }}"
   with_items:   "{{ firewalld_richrules }}"
-  notify: restart firewalld
+  notify: reload firewalld
