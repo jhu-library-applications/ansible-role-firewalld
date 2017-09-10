@@ -1,0 +1,20 @@
+---
+- name: create ipset
+  command: "firewall-cmd --permanent --new-ipset={{ item.name }} --type=hash:net"
+  notify: reload firewalld
+
+- name: add ips to ipset
+  command: "firewall-cmd --permanent --ipset={{ item.name }} --add-entry={{ ip }}"
+  with_items: "{{ item.ips }}"
+  loop_control:
+    loop_var: ip
+
+- name: get ipset info
+  command: "firewall-cmd --permanent --info-ipset={{ item.name }}"
+  register: ipset_info
+  failed_when: "item.name not in ipset_info.stdout"
+  changed_when: false
+
+- debug:
+    msg: "{{ ipset_info.stdout_lines }}"
+    verbosity: 1

@@ -16,3 +16,12 @@ firewalld_richrules:
     state: disabled
   - rule: 'rule family="ipv4" source ipset="blacklist" log prefix="blacklist-access-denied" level="info" limit value="1/m" reject'
     state: disabled
+firewalld_ipsets: [] # NOTE: remember to remove the empty brackets if configuring ipsets
+  # - name: whitelist
+  #   ips:
+  #     - "63.245.215.20"
+  #     - "69.50.232.54"
+  # - name: blacklist
+  #   ips:
+  #     - "172.217.7.142"
+  #     - "31.13.69.228"

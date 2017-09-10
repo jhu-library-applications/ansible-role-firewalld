@@ -27,6 +27,9 @@
   with_items:   "{{ firewalld_ports }}"
   notify: reload firewalld
 
+- name: configure ipsets in firewalld
+  include: configure_ipsets.yml
+
 - name: configure rich rules in firewalld
   firewalld:
     rich_rule:  "{{ item.rule }}"

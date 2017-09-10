@@ -1,0 +1,17 @@
+---
+- name: get existing ipsets
+  command: "firewall-cmd --permanent --get-ipsets"
+  register: existing_ipsets_result
+
+- set_fact:
+    existing_ipsets: "{{ existing_ipsets_result.stdout.split(' ') | list }}"
+  when: existing_ipsets_result.stdout != ''
+
+- name: remove existing ipsets
+  command: "firewall-cmd --permanent --delete-ipset={{ item }}"
+  with_items: "{{ existing_ipsets | default([]) }}"
+  notify: reload firewalld
+
+- name: create new ipsets
+  include: add_ipsets.yml
+  with_items: "{{ firewalld_ipsets }}"
