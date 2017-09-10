@@ -10,5 +10,9 @@ firewalld_ports:
     protocol: tcp
     state: disabled
 firewalld_richrules:
-  - rule: 'rule family="ipv4" source address="128.220.8.58/32" source-port port="8080" protocol="tcp" log prefix="jetty" level="info" accept'
+  - rule: 'rule family="ipv4" source ipset="whitelist" port port="8080" protocol="tcp" log prefix="port-access-allowed" level="info" limit value="1/m" accept'
+    state: disabled
+  - rule: 'rule family="ipv4" source NOT ipset="whitelist" port port="8080" protocol="tcp" log prefix="port-access-denied" level="info" limit value="1/m" reject'
+    state: disabled
+  - rule: 'rule family="ipv4" source ipset="blacklist" log prefix="blacklist-access-denied" level="info" limit value="1/m" reject'
     state: disabled
