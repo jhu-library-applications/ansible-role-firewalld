@@ -9,6 +9,14 @@
   with_items:
     - firewalld
 
+# NOTE: ipsets configuration requires firewalld is running. make sure this is so:
+- name: ensure firewalld service is running
+  become: true
+  service:
+    name: "firewalld"
+    enabled: true
+    state: started
+
 - name: configure services in firewalld
   firewalld:
     service:    "{{ item.service }}"
