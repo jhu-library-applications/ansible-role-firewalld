@@ -9,6 +9,13 @@
   with_items:
     - firewalld
 
+# TODO: handle other OSes
+- name: "update firewalld? {{ firewalld_update_packages }}"
+  command: "yum update firewalld -y"
+  register: result
+  changed_when: "'No packages marked for update' not in result.stdout"
+  when: firewalld_update_packages and ansible_os_family == 'RedHat'
+
 # NOTE: ipsets configuration requires firewalld is running. make sure this is so:
 - name: ensure firewalld service is running
   become: true

@@ -1,6 +1,7 @@
 ---
-firewalld_testing:      false
-firewalld_zone:         "public"
+firewalld_testing:          false
+firewalld_update_packages:  "{{ update_packages | default(false) }}"
+firewalld_zone:             "public"
 firewalld_services:
   - service: ssh
   - service: http
