@@ -15,24 +15,25 @@ None
 Role Variables
 --------------
 
-    firewalld_testing:      false
-    firewalld_zone:         "public"
-    firewalld_services:
-      - service: ssh
-      - service: http
-        state: disabled
-    firewalld_ports:
-      - port: 80
-        protocol: tcp
-        state: disabled
-    firewalld_richrules:
-      - rule: 'rule family="ipv4" source ipset="whitelist" port port="8080" protocol="tcp" log prefix="port-access-allowed" level="info" limit value="1/m" accept'
-        state: disabled
-      - rule: 'rule family="ipv4" source NOT ipset="whitelist" port port="8080" protocol="tcp" log prefix="port-access-denied" level="info" limit value="1/m" reject'
-        state: disabled
-      - rule: 'rule family="ipv4" source ipset="blacklist" log prefix="blacklist-access-denied" level="info" limit value="1/m" reject'
-        state: disabled
-    firewalld_ipsets: [] # NOTE: remember to remove the empty brackets if configuring ipsets
+    firewalld_testing:          false
+    firewalld_update_packages:  "{{ update_packages | default(false) }}"
+    firewalld_zone:             "public"
+    firewalld_services: []
+      # - service: ssh
+      # - service: http
+      #   state: disabled
+    firewalld_ports: []
+      # - port: 80
+      #   protocol: tcp
+      #   state: disabled
+    firewalld_richrules: []
+      # - rule: 'rule family="ipv4" source ipset="whitelist" port port="8080" protocol="tcp" log prefix="port-access-allowed" level="info" limit value="1/m" accept'
+      #   state: disabled
+      # - rule: 'rule family="ipv4" source NOT ipset="whitelist" port port="8080" protocol="tcp" log prefix="port-access-denied" level="info" limit value="1/m" reject'
+      #   state: disabled
+      # - rule: 'rule family="ipv4" source ipset="blacklist" log prefix="blacklist-access-denied" level="info" limit value="1/m" reject'
+      #   state: disabled
+    firewalld_ipsets: []
       # - name: whitelist
       #   ips:
       #     - "63.245.215.20"
@@ -57,7 +58,7 @@ Example Playbook
 License
 -------
 
-CC0
+[CC0](http://creativecommons.org/publicdomain/zero/1.0/)
 
 Author Information
 ------------------
