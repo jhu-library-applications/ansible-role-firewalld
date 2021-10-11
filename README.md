@@ -1,6 +1,8 @@
 Ansible Role: FirewallD
 =========
 
+*NOTE: This role is now tagged for deletion and has been replaced with https://github.com/jhu-library-devops/ansible-role-firewalld.*
+
 Installs and configures FirewallD on Centos
 
 This role must be run with `become: true`.
